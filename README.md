@@ -68,4 +68,4 @@ npm run build
 
 ## Deploy
 
-See [DEPLOY.md](DEPLOY.md).
+The bot deploys to Railway from `server/Dockerfile.railway`. It needs a TURN server for audio. See [DEPLOY.md](DEPLOY.md).

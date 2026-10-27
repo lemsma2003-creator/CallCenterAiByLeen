@@ -1,0 +1,31 @@
+# Railway image for the clinic voice bot.
+# Railway settings: Root Directory = server, RAILWAY_DOCKERFILE_PATH = Dockerfile.railway
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
+
+ENV PYTHONUNBUFFERED=1 \
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
+
+# git: Pipecat is installed from GitHub (pinned commit in pyproject.toml).
+# libglib2.0-0: needed by opencv-python-headless, which the webrtc extra pulls in.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends git libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Dependencies first, so code changes don't reinstall everything.
+# Uses uv.lock when it's committed (reproducible), otherwise resolves from pyproject.toml.
+COPY pyproject.toml uv.lock* ./
+RUN if [ -f uv.lock ]; then \
+        uv sync --locked --no-install-project --no-dev; \
+    else \
+        uv sync --no-install-project --no-dev; \
+    fi
+
+# Only what the bot needs at runtime.
+COPY bot.py knowledge.md ./
+COPY ui ./ui
+
+EXPOSE 7860
+CMD ["sh", "-c", "exec uv run --no-sync bot.py -t webrtc --host 0.0.0.0 --port ${PORT:-7860}"]
