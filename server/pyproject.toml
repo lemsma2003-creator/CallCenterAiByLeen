@@ -1,0 +1,13 @@
+[project]
+name = "callcenter-ai-bot"
+version = "0.1.0"
+description = "Jordanian-Arabic voice receptionist for a demo dental clinic, built on Pipecat + OpenAI Realtime"
+requires-python = ">=3.11"
+dependencies = [
+    # Pinned to the Pipecat commit this bot was built and tested against.
+    "pipecat-ai[openai,runner,webrtc,daily,livekit,websocket] @ git+https://github.com/pipecat-ai/pipecat.git@68b0687d96be110f1e3ab41fce2b708457d122c5",
+    "python-dotenv",
+]
+
+[tool.uv]
+package = false

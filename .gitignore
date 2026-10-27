@@ -1,0 +1,25 @@
+# Secrets: never commit
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+client/dist/
+
+# Test / scratch files
+*.log
+*.wav
+*.mp3
+*.webm
+test-*/
+.DS_Store
+Thumbs.db
+
+# Commit message drafts
+COMMIT_MSG.txt
